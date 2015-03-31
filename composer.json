@@ -20,13 +20,12 @@
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
         "psr-4": {
             "Tx\\": "src/"
-        },
-        "files": [
-            "src/functions/helper.php",
-            "src/functions/is.php"
-        ]
+        }
     },
     "autoload-dev": {
         "classmap": [
