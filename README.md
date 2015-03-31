@@ -13,6 +13,6 @@ $ composer require txthinking/util:dev-master
 
 ```
 <?php
-$r = \Tx\isEmail('hi@gmail.com');
+$r = \Tx\Is::email('hi@gmail.com');
 \Tx\v($r);
 ```
