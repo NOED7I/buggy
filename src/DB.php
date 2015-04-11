@@ -15,7 +15,7 @@
 // Author: cloud@txthinking.com
 //
 
-use \R as R;
+use \RedBeanPHP\R;
 
 // C return config like this:
 /*
@@ -118,9 +118,9 @@ final class DB{
             'exec',
             ))){
             self::c('write');
-            return call_user_func_array("R::$name", $args);
+            return call_user_func_array("\\RedBeanPHP\\R::$name", $args);
         }
         self::c('read');
-        return call_user_func_array("R::$name", $args);
+        return call_user_func_array("\\RedBeanPHP\\R::$name", $args);
     }
 }

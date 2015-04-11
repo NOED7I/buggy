@@ -23,7 +23,7 @@ class DBTest extends TestCase{
         $this->assertTrue(\Tx\b($r)===true);
     }
     public function testUpdate(){
-        $r = DB::exec('UPDATE fuck SET name="test" WHERE id=1');
+        $r = DB::exec('UPDATE fuck SET name="'.time().'" WHERE id=1');
         $this->assertTrue(\Tx\b($r)===true);
     }
 }
