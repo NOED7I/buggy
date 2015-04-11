@@ -16,6 +16,7 @@
 //
 
 use \RedBeanPHP\R;
+use \Dotenv;
 
 // C return config like this:
 /*
@@ -40,38 +41,39 @@ array (
     ),
 )
 //*/
-final class DB{
+class DB{
     private static $_mcs;
     private static $_scs;
-    private static $_i = false;
+    private static $_inited = false;
 
     private function __construct(){}
 
-    private function config(){
+    public static function conf(){
+        Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
         return array (
             'write' => array (
                 array (
-                    'host' => $_ENV['MYSQL_HOST'],
-                    'port' => $_ENV['MYSQL_PORT'],
-                    'username' => $_ENV['MYSQL_USER'],
-                    'password' => $_ENV['MYSQL_PASSWORD'],
-                    'dbname' => $_ENV['MYSQL_DATABASE'],
+                    'host' => isset($_ENV['WRITE_MYSQL_HOST']) ? $_ENV['WRITE_MYSQL_HOST'] :  $_ENV['MYSQL_HOST'],
+                    'port' => isset($_ENV['WRITE_MYSQL_PORT']) ? $_ENV['WRITE_MYSQL_PORT'] :  $_ENV['MYSQL_PORT'],
+                    'username' => isset($_ENV['WRITE_MYSQL_USER']) ? $_ENV['WRITE_MYSQL_USER'] :  $_ENV['MYSQL_USER'],
+                    'password' => isset($_ENV['WRITE_MYSQL_PASSWORD']) ? $_ENV['WRITE_MYSQL_PASSWORD'] : $_ENV['MYSQL_PASSWORD'],
+                    'dbname' => isset($_ENV['WRITE_MYSQL_DATABASE']) ? $_ENV['WRITE_MYSQL_DATABASE'] : $_ENV['MYSQL_DATABASE'],
                 ),
             ),
             'read' => array (
                 array (
-                    'host' => $_ENV['MYSQL_HOST'],
-                    'port' => $_ENV['MYSQL_PORT'],
-                    'username' => $_ENV['MYSQL_USER'],
-                    'password' => $_ENV['MYSQL_PASSWORD'],
-                    'dbname' => $_ENV['MYSQL_DATABASE'],
+                    'host' => isset($_ENV['READ_MYSQL_HOST']) ? $_ENV['READ_MYSQL_HOST'] :  $_ENV['MYSQL_HOST'],
+                    'port' => isset($_ENV['READ_MYSQL_PORT']) ? $_ENV['READ_MYSQL_PORT'] :  $_ENV['MYSQL_PORT'],
+                    'username' => isset($_ENV['READ_MYSQL_USER']) ? $_ENV['READ_MYSQL_USER'] :  $_ENV['MYSQL_USER'],
+                    'password' => isset($_ENV['READ_MYSQL_PASSWORD']) ? $_ENV['READ_MYSQL_PASSWORD'] : $_ENV['MYSQL_PASSWORD'],
+                    'dbname' => isset($_ENV['READ_MYSQL_DATABASE']) ? $_ENV['READ_MYSQL_DATABASE'] : $_ENV['MYSQL_DATABASE'],
                 ),
             ),
         );
     }
 
-    private static function i() {
-        $c = self::config();
+    protected static function init() {
+        $c = self::conf();
         shuffle($c['write']);
         shuffle($c['read']);
         self::$_mcs = $c['write'];
@@ -85,13 +87,13 @@ final class DB{
         foreach(self::$_scs as $i=>$c){
             R::addDatabase("read:$i", sprintf('mysql:host=%s;port=%d;dbname=%s', $c['host'], $c['port'], $c['dbname']), $c['username'], $c['password']);
         }
-        self::$_i = true;
+        self::$_inited = true;
     }
 
     // $a=read/write
-    public static function c($a){
-        if(!self::$_i){
-            self::i();
+    protected static function select($a){
+        if(!self::$_inited){
+            self::init();
         }
         if($a === 'write'){
             foreach(self::$_mcs as $i=>$c){
@@ -100,7 +102,7 @@ final class DB{
                     return;
                 }
             }
-            throw new \Exception('All master DB have down');
+            throw new \Exception('Master DB have down');
         }
         if($a === 'read'){
             foreach(self::$_scs as $i=>$c){
@@ -109,7 +111,7 @@ final class DB{
                     return;
                 }
             }
-            throw new \Exception('All slave and master DB have down');
+            throw new \Exception('Slave and master DB have down');
         }
     }
 
@@ -117,10 +119,10 @@ final class DB{
         if(in_array($name, array(
             'exec',
             ))){
-            self::c('write');
+            self::select('write');
             return call_user_func_array("\\RedBeanPHP\\R::$name", $args);
         }
-        self::c('read');
+        self::select('read');
         return call_user_func_array("\\RedBeanPHP\\R::$name", $args);
     }
 }
