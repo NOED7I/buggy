@@ -88,7 +88,7 @@ final class DB{
         self::$_i = true;
     }
 
-    // $a=W/R
+    // $a=read/write
     public static function c($a){
         if(!self::$_i){
             self::i();

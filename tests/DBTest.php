@@ -2,20 +2,29 @@
 use \Tx\DB;
 class DBTest extends TestCase{
 
+    public function testInsert(){
+        $r = DB::exec('insert into fuck values(null, "fuck" )');
+        $this->assertTrue(\Tx\b($r)===true);
+    }
     public function testGetAll(){
-        //$this->assertTrue($r===true);
+        $r = DB::getAll('select * from fuck');
+        $this->assertTrue(\Tx\b($r)===true);
     }
     public function testGetRow(){
-        //$this->assertTrue($r===true);
+        $r = DB::getRow('select * from fuck limit 1');
+        $this->assertTrue(\Tx\b($r)===true);
     }
     public function testGetCol(){
-        //$this->assertTrue($r===true);
+        $r = DB::getCol('select name from fuck');
+        $this->assertTrue(\Tx\b($r)===true);
     }
     public function testGetCell(){
-        //$this->assertTrue($r===true);
+        $r = DB::getCell('select name from fuck limit 1');
+        $this->assertTrue(\Tx\b($r)===true);
     }
-    public function testExec(){
-        //$this->assertTrue($r===true);
+    public function testUpdate(){
+        $r = DB::exec('UPDATE fuck SET name="test" WHERE id=1');
+        $this->assertTrue(\Tx\b($r)===true);
     }
 }
 
