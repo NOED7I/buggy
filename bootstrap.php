@@ -1,2 +1,2 @@
 <?php
-Dotenv::load(__DIR__);
+Dotenv::load('./');
