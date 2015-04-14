@@ -73,7 +73,7 @@ class DB{
     }
 
     protected static function init() {
-        $c = self::conf();
+        $c = static::conf();
         shuffle($c['write']);
         shuffle($c['read']);
         self::$_mcs = $c['write'];
