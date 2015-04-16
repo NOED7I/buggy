@@ -1,2 +1,2 @@
 <?php
-class_exists('Dotevn') && Dotenv::load('./');
+class_exists('\Dotenv') && Dotenv::load('./');

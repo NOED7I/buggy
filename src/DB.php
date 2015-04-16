@@ -18,38 +18,41 @@
 use \RedBeanPHP\R;
 use \Dotenv;
 
-// C return config like this:
-/*
-array (
-    'write' => array (
-        array (
-            'host' => '9.9.9.9',
-            'port' => '3306',
-            'username' => 'root',
-            'password' => '111111',
-            'dbname' => 'test',
-        ),
-    ),
-    'read' => array (
-        array (
-            'host' => '9.9.9.9',
-            'port' => '3306',
-            'username' => 'root',
-            'password' => '111111',
-            'dbname' => 'test',
-        ),
-    ),
-)
-//*/
 class DB{
     private static $_mcs;
     private static $_scs;
     private static $_inited = false;
+    private static $_writeConnected = false;
+    private static $_readConnected = false;
+    private static $_last;
 
     private function __construct(){}
 
+    // conf return config like this:
+    /*
+    array (
+        'write' => array (
+            array (
+                'host' => '9.9.9.9',
+                'port' => '3306',
+                'username' => 'root',
+                'password' => '111111',
+                'dbname' => 'test',
+            ),
+        ),
+        'read' => array (
+            array (
+                'host' => '9.9.9.9',
+                'port' => '3306',
+                'username' => 'root',
+                'password' => '111111',
+                'dbname' => 'test',
+            ),
+        ),
+    )
+    //*/
     public static function conf(){
-       class_exists('Dotevn') && Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
+       class_exists('\Dotenv') && Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
         return array (
             'write' => array (
                 array (
@@ -73,6 +76,9 @@ class DB{
     }
 
     protected static function init() {
+        if(self::$_inited){
+            return;
+        }
         $c = static::conf();
         shuffle($c['write']);
         shuffle($c['read']);
@@ -92,22 +98,30 @@ class DB{
 
     // $a=read/write
     protected static function select($a){
-        if(!self::$_inited){
-            self::init();
-        }
+        self::init();
         if($a === 'write'){
+            if(self::$_writeConnected && self::$_last==='write'){
+                return;
+            }
             foreach(self::$_mcs as $i=>$c){
                 R::selectDatabase("write:$i");
                 if(R::testConnection()){
+                    self::$_writeConnected = true;
+                    self::$_last = 'write';
                     return;
                 }
             }
             throw new \Exception('Master DB have down');
         }
         if($a === 'read'){
+            if(self::$_readConnected && self::$_last==='read'){
+                return;
+            }
             foreach(self::$_scs as $i=>$c){
                 R::selectDatabase("read:$i");
                 if(R::testConnection()){
+                    self::$_readConnected = true;
+                    self::$_last = 'read';
                     return;
                 }
             }
@@ -118,6 +132,7 @@ class DB{
     public static function __callStatic($name, array $args){
         if(in_array($name, array(
             'exec',
+            'getInsertID',
             ))){
             self::select('write');
             return call_user_func_array("\\RedBeanPHP\\R::$name", $args);
