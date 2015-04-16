@@ -15,8 +15,6 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "vlucas/phpdotenv": "~1.1",
-        "gabordemooij/redbean": "~4.2",
         "rmccue/requests": "~1.6"
     },
     "require-dev": {
@@ -35,5 +33,9 @@
         "classmap": [
             "tests/TestCase.php"
         ]
+    },
+    "suggest":{
+        "vlucas/phpdotenv": "Required to use dot env for DB ~1.1",
+        "gabordemooij/redbean": "Required to use DB ~4.2"
     }
 }
