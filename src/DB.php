@@ -49,7 +49,7 @@ class DB{
     private function __construct(){}
 
     public static function conf(){
-        Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
+       class_exists('Dotevn') && Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
         return array (
             'write' => array (
                 array (
