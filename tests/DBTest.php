@@ -1,5 +1,5 @@
 <?php
-use \Tx\DB;
+use \Tx\DB as ADB;
 class DBTest extends TestCase{
 
     public function testInsert(){
@@ -34,3 +34,27 @@ class DBTest extends TestCase{
     }
 }
 
+class DB extends ADB{
+    public static function conf(){
+        return array (
+            'write' => array (
+                array (
+                    'host' => '192.168.59.103',
+                    'port' => '3306',
+                    'username' => 'root',
+                    'password' => '111111',
+                    'dbname' => 'test',
+                ),
+            ),
+            'read' => array (
+                array (
+                    'host' => '192.168.59.103',
+                    'port' => '3306',
+                    'username' => 'root',
+                    'password' => '111111',
+                    'dbname' => 'test',
+                ),
+            ),
+        );
+    }
+}

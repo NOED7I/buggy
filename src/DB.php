@@ -16,9 +16,8 @@
 //
 
 use \RedBeanPHP\R;
-use \Dotenv;
 
-class DB{
+abstract class DB implements DBInterface{
     private static $_mcs;
     private static $_scs;
     private static $_inited = false;
@@ -27,53 +26,6 @@ class DB{
     private static $_last;
 
     private function __construct(){}
-
-    // conf return config like this:
-    /*
-    array (
-        'write' => array (
-            array (
-                'host' => '9.9.9.9',
-                'port' => '3306',
-                'username' => 'root',
-                'password' => '111111',
-                'dbname' => 'test',
-            ),
-        ),
-        'read' => array (
-            array (
-                'host' => '9.9.9.9',
-                'port' => '3306',
-                'username' => 'root',
-                'password' => '111111',
-                'dbname' => 'test',
-            ),
-        ),
-    )
-    //*/
-    public static function conf(){
-       class_exists('\Dotenv') && Dotenv::required(array('MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE'));
-        return array (
-            'write' => array (
-                array (
-                    'host' => isset($_ENV['WRITE_MYSQL_HOST']) ? $_ENV['WRITE_MYSQL_HOST'] :  $_ENV['MYSQL_HOST'],
-                    'port' => isset($_ENV['WRITE_MYSQL_PORT']) ? $_ENV['WRITE_MYSQL_PORT'] :  $_ENV['MYSQL_PORT'],
-                    'username' => isset($_ENV['WRITE_MYSQL_USER']) ? $_ENV['WRITE_MYSQL_USER'] :  $_ENV['MYSQL_USER'],
-                    'password' => isset($_ENV['WRITE_MYSQL_PASSWORD']) ? $_ENV['WRITE_MYSQL_PASSWORD'] : $_ENV['MYSQL_PASSWORD'],
-                    'dbname' => isset($_ENV['WRITE_MYSQL_DATABASE']) ? $_ENV['WRITE_MYSQL_DATABASE'] : $_ENV['MYSQL_DATABASE'],
-                ),
-            ),
-            'read' => array (
-                array (
-                    'host' => isset($_ENV['READ_MYSQL_HOST']) ? $_ENV['READ_MYSQL_HOST'] :  $_ENV['MYSQL_HOST'],
-                    'port' => isset($_ENV['READ_MYSQL_PORT']) ? $_ENV['READ_MYSQL_PORT'] :  $_ENV['MYSQL_PORT'],
-                    'username' => isset($_ENV['READ_MYSQL_USER']) ? $_ENV['READ_MYSQL_USER'] :  $_ENV['MYSQL_USER'],
-                    'password' => isset($_ENV['READ_MYSQL_PASSWORD']) ? $_ENV['READ_MYSQL_PASSWORD'] : $_ENV['MYSQL_PASSWORD'],
-                    'dbname' => isset($_ENV['READ_MYSQL_DATABASE']) ? $_ENV['READ_MYSQL_DATABASE'] : $_ENV['MYSQL_DATABASE'],
-                ),
-            ),
-        );
-    }
 
     protected static function init() {
         if(self::$_inited){

@@ -11,7 +11,7 @@ function i($v){ return intval(filter_var($v, FILTER_VALIDATE_INT)); }
 function f($v){ return floatval(filter_var($v, FILTER_VALIDATE_FLOAT)); }
 function b($v){ return (bool)($v); } // boolval >= 5.5
 function s($v){ return strval($v); }
-function v($v){
+function v(){
     echo "<pre>\n";
     call_user_func_array('var_dump', func_get_args());
     exit;
