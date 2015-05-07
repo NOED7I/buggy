@@ -1,10 +1,10 @@
 {
-    "name": "txthinking/util",
+    "name": "txthinking/buggy",
     "type": "library",
-    "keywords": ["util"],
-    "description": "Some util stuff",
+    "keywords": ["utils"],
+    "description": "Some util stuff for every framework",
     "license": "MIT",
-    "homepage": "http://github.com/txthinking/util-php",
+    "homepage": "http://github.com/txthinking/buggy",
     "authors": [
         {
             "name": "Cloud",
