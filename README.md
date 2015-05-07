@@ -1,4 +1,4 @@
-util-php
+buggy
 =======
 
 Some util stuff
@@ -6,7 +6,7 @@ Some util stuff
 ### Install
 
 ```
-$ composer require txthinking/util:dev-master
+$ composer require txthinking/buggy:dev-master
 ```
 
 ### Usage
@@ -14,5 +14,4 @@ $ composer require txthinking/util:dev-master
 ```
 <?php
 $r = \Tx\Is::email('hi@gmail.com');
-\Tx\v($r);
 ```
