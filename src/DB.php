@@ -17,7 +17,7 @@
 
 use \RedBeanPHP\R;
 
-abstract class DB implements DBInterface{
+abstract class DB implements FacadeInterface{
     private static $_mcs;
     private static $_scs;
     private static $_inited = false;

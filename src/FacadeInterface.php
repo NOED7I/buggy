@@ -1,6 +1,6 @@
 <?php namespace Tx;
 
-interface DBInterface{
+interface FacadeInterface{
     // conf return config like this:
     /*
     array (
