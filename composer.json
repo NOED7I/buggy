@@ -21,9 +21,6 @@
         "phpunit/phpunit": "~4.6"
     },
     "autoload": {
-        "files": [
-            "src/helper.php"
-        ],
         "psr-4": {
             "Tx\\": "src/"
         }
