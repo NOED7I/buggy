@@ -6,7 +6,7 @@ Some util stuff
 ### Install
 
 ```
-$ composer require txthinking/buggy:dev-master
+$ composer require txthinking/buggy
 ```
 
 ### Usage
