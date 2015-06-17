@@ -96,7 +96,6 @@ class Response{
             $headers['Content-Type'] = 'text/plain; charset=utf-8';
         }
         self::raw($code, $headers, $message);
-        exit;
     }
 
     /**
@@ -115,7 +114,6 @@ class Response{
             $body = json_encode($data);
         }
         self::raw($code, $headers, $body);
-        exit;
     }
 
     /**
@@ -149,12 +147,10 @@ class Response{
      * @return
      */
     protected static function _return($result, $error = null){
-        header('Content-Type: application/json');
-        echo json_encode(array(
+        self::json(array(
             'result' => $result,
             'error' => $error,
         ));
-        exit;
     }
 }
 
