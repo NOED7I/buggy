@@ -10,7 +10,7 @@
  * use \Tx\Http;
  *
  * $r = Http::get('http://httpbin.org/get?id=1');
- * $r = Http::post('http://httpbin.org/post', array('id'=>'1'));
+ * $r = Http::post('http://httpbin.org/post', [], array('id'=>'1'));
  *
  * success: $r is Array
  * failed:  $r is String
@@ -20,10 +20,10 @@ use Requests;
 
 class Http{
     private function __construct(){}
-    private static function request($method, $url, $data = array(), $timeout=10){
+    private static function request($method, $url, $headers = array(), $data = array(), $timeout=10){
         $r = Requests::request(
             $url,
-            array(),
+            $headers,
             $data,
             strtoupper($method),
             array(

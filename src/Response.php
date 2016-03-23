@@ -120,22 +120,24 @@ class Response{
      * @brief ok
      *
      * @param $data
+     * @param $code
      *
      * @return
      */
-    public static function ok($data=null){
-        self::_return($data);
+    public static function ok($data=null, $code=200){
+        self::_struct($data, null, $code);
     }
 
     /**
      * @brief error
      *
      * @param $error
+     * @param $code
      *
      * @return
      */
-    public static function error($error){
-        self::_return(null, $error);
+    public static function error($error, $code=200){
+        self::_struct(null, $error, $code);
     }
 
     /**
@@ -146,11 +148,11 @@ class Response{
      *
      * @return
      */
-    protected static function _return($result, $error = null){
+    protected static function _struct($result, $error = null, $code=200){
         self::json(array(
             'result' => $result,
             'error' => $error,
-        ));
+        ), $code);
     }
 }
 

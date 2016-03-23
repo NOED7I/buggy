@@ -7,7 +7,7 @@ class HttpTest extends TestCase{
     }
 
     public function testPost(){
-        $r = Http::post('http://httpbin.org/post', array('id'=>1));
+        $r = Http::post('http://httpbin.org/post', [], array('id'=>1));
         $this->assertTrue(is_array($r));
     }
 }
