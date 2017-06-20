@@ -10,7 +10,7 @@ class Is{
         $n = s($n);
         $sum = 0;
         for($i=1; $i<strlen($n); $i++){
-            $now = i($n[strlen($n)-1-$i]);
+            $now = intval($n[strlen($n)-1-$i]);
             if($i%2 === 0){
                 $sum += $now;
                 continue;
@@ -18,11 +18,11 @@ class Is{
             $_ = $now*2;
             if($_ >= 10){
                 $_0 = s($_);
-                $_ = i($_0[0]) + i($_0[1]);
+                $_ = intval($_0[0]) + intval($_0[1]);
             }
             $sum += $_;
         }
-        if(($sum + i($n[strlen($n)-1]))%10 !== 0){
+        if(($sum + intval($n[strlen($n)-1]))%10 !== 0){
             return false;
         }
         return true;
@@ -36,13 +36,13 @@ class Is{
         $sum = 0;
         for($i=1; $i<strlen($id); $i++){
             $w = pow(2, $i+1-1)%11;
-            $sum += i($id[$i]) * $w;
+            $sum += intval($id[$i]) * $w;
         }
         $v = (12-($sum%11))%11;
         if($v === 10){
             return strtolower(s($id[0])) === 'x';
         }
-        return i($id[0]) === $v;
+        return intval($id[0]) === $v;
     }
 
     public static function email($email){
