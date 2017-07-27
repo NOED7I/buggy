@@ -7,7 +7,7 @@
  */
 class Is{
     public static function bankCard($n){
-        $n = s($n);
+        $n = strval($n);
         $sum = 0;
         for($i=1; $i<strlen($n); $i++){
             $now = intval($n[strlen($n)-1-$i]);
@@ -17,7 +17,7 @@ class Is{
             }
             $_ = $now*2;
             if($_ >= 10){
-                $_0 = s($_);
+                $_0 = strval($_);
                 $_ = intval($_0[0]) + intval($_0[1]);
             }
             $sum += $_;
@@ -40,7 +40,7 @@ class Is{
         }
         $v = (12-($sum%11))%11;
         if($v === 10){
-            return strtolower(s($id[0])) === 'x';
+            return strtolower(strval($id[0])) === 'x';
         }
         return intval($id[0]) === $v;
     }
